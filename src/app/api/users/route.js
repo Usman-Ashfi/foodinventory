@@ -98,3 +98,70 @@ export async function POST(request) {
     )
   }
 }
+
+export async function DELETE(request) {
+  try {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('token')?.value
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const payload = await verifyToken(token)
+    if (!payload || payload.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const { id } = await request.json()
+    const userId = Number(id)
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return NextResponse.json(
+        { error: 'Valid user id is required' },
+        { status: 400 }
+      )
+    }
+
+    if (userId === Number(payload.userId)) {
+      return NextResponse.json(
+        { error: 'You cannot delete your own account while signed in' },
+        { status: 400 }
+      )
+    }
+
+    const existing = await pool.query(
+      'SELECT id, role FROM food_users WHERE id = $1',
+      [userId]
+    )
+
+    const user = existing.rows[0]
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    if (user.role === 'admin') {
+      const adminCount = await pool.query(
+        "SELECT COUNT(*)::int AS count FROM food_users WHERE role = 'admin'"
+      )
+
+      if (adminCount.rows[0].count <= 1) {
+        return NextResponse.json(
+          { error: 'At least one admin account must remain' },
+          { status: 400 }
+        )
+      }
+    }
+
+    await pool.query('DELETE FROM food_users WHERE id = $1', [userId])
+
+    return NextResponse.json({ success: true, id: userId })
+  } catch (error) {
+    console.error('Delete user error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

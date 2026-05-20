@@ -11,6 +11,21 @@ CREATE TABLE IF NOT EXISTS food_users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS food_inventory_items (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  category VARCHAR(80) DEFAULT 'Other',
+  quantity NUMERIC(10, 2) DEFAULT 0,
+  unit VARCHAR(30) DEFAULT 'pcs',
+  min_quantity NUMERIC(10, 2) DEFAULT 0,
+  expiry_date DATE,
+  location VARCHAR(80) DEFAULT 'Pantry',
+  notes TEXT,
+  created_by INTEGER REFERENCES food_users(id) ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Default login: admin / admin123
 INSERT INTO food_users (username, password_hash, full_name, role)
 VALUES (
