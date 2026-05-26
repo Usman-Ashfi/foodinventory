@@ -55,7 +55,7 @@ export default function Hero() {
         animate="visible"
         className="relative w-full overflow-hidden bg-white"
       >
-        <div className="absolute right-0 top-0 hidden h-full w-[43%] rounded-l-[48%] bg-[#232832] lg:block" />
+        <div className="absolute right-0 top-0 hidden h-full w-[43%] rounded-l-[48%] bg-[#153a20] lg:block" />
         <div className="absolute right-0 top-0 hidden h-full w-[43%] bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,.16),transparent_34%),linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-size-[auto,34px_34px,34px_34px] lg:block" />
 
         <div className="relative z-10 grid min-h-170 lg:grid-cols-[0.94fr_1.06fr]">
@@ -111,7 +111,11 @@ export default function Hero() {
               variants={fade}
               className="mt-16 flex items-center gap-5"
             >
-              <button className="hidden size-12 rounded-full bg-white shadow-xl shadow-black/10 sm:grid sm:place-items-center">
+              <button
+                type="button"
+                aria-label="Previous product summary"
+                className="hidden size-12 rounded-full bg-white shadow-xl shadow-black/10 sm:grid sm:place-items-center"
+              >
                 <ChevronLeft className="size-5" />
               </button>
               {productTabs.map(([label, value, color]) => (
@@ -126,7 +130,11 @@ export default function Hero() {
                   <p className="text-sm font-black text-black">{value}</p>
                 </div>
               ))}
-              <button className="hidden size-12 rounded-full bg-white shadow-xl shadow-black/10 sm:grid sm:place-items-center">
+              <button
+                type="button"
+                aria-label="Next product summary"
+                className="hidden size-12 rounded-full bg-white shadow-xl shadow-black/10 sm:grid sm:place-items-center"
+              >
                 <ChevronRight className="size-5" />
               </button>
             </motion.div>

@@ -47,10 +47,10 @@ function ModuleCard({ item, index }) {
 export default function Modules() {
   return (
     <section id="modules">
-      <div className="w-full overflow-hidden bg-white py-7 shadow-2xl shadow-black/10 ">
+      <div className="w-full overflow-hidden bg-white py-20 shadow-2xl shadow-black/10 ">
         <div className="grid gap-10 lg:grid-cols-[1.14fr_0.86fr] lg:items-center">
           <Reveal className="relative">
-            <div className="absolute left-0 top-0 hidden h-full w-[55%] rounded-r-[48%] bg-[#232832] lg:block" />
+            <div className="absolute left-0 top-0 hidden h-full w-[55%] rounded-r-[48%] bg-[#153a20] lg:block" />
             <motion.div
               variants={fade}
               className="relative grid gap-5 sm:grid-cols-2"
@@ -61,7 +61,7 @@ export default function Modules() {
             </motion.div>
             <motion.div
               variants={fade}
-              className="relative mt-6 rounded-4xl bg-[#232832] p-6 text-white shadow-2xl shadow-black/15"
+              className="relative mt-6 rounded-4xl bg-[#153a20] p-6 text-white shadow-2xl shadow-black/15"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -112,13 +112,24 @@ export default function Modules() {
               variants={fade}
               className="mt-8 flex items-center gap-4"
             >
-              <button className="grid size-12 place-items-center rounded-full bg-white shadow-xl shadow-black/10">
+              <button
+                type="button"
+                aria-label="Previous module"
+                className="grid size-12 place-items-center rounded-full bg-white shadow-xl shadow-black/10"
+              >
                 <ChevronLeft className="size-5" />
               </button>
-              <button className="inline-flex items-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20">
+              <button
+                type="button"
+                className="inline-flex items-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20"
+              >
                 Explore modules <ArrowRight className="size-4" />
               </button>
-              <button className="grid size-12 place-items-center rounded-full bg-white shadow-xl shadow-black/10">
+              <button
+                type="button"
+                aria-label="Next module"
+                className="grid size-12 place-items-center rounded-full bg-white shadow-xl shadow-black/10"
+              >
                 <ChevronRight className="size-5" />
               </button>
             </motion.div>

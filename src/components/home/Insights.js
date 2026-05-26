@@ -14,8 +14,8 @@ const receiptRows = [
 export default function Insights() {
   return (
     <section id="insights" className="w-full overflow-hidden bg-white">
-      <div className="grid min-h-[720px] lg:grid-cols-[1.1fr_0.9fr]">
-        <Reveal className="relative overflow-hidden bg-[#232832] px-7 py-16 text-white sm:px-12 lg:px-16">
+      <div className="grid min-h-180 lg:grid-cols-[1.1fr_0.9fr]">
+        <Reveal className="relative overflow-hidden bg-[#153a20] px-7 py-16 text-white sm:px-12 lg:px-16">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,224,120,.2),transparent_30%),linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-size-[auto,36px_36px,36px_36px]" />
           <motion.div
             variants={fade}
@@ -33,7 +33,7 @@ export default function Insights() {
               </span>
             </div>
 
-            <div className="relative rounded-[2rem] bg-white/10 p-5 backdrop-blur-md">
+            <div className="relative rounded-4xl bg-white/10 p-5 backdrop-blur-md">
               <motion.svg
                 viewBox="0 0 720 260"
                 className="absolute inset-x-5 top-8 h-52 w-[calc(100%-2.5rem)] text-[#ffe078]"
@@ -53,10 +53,10 @@ export default function Insights() {
                   }}
                 />
               </motion.svg>
-              <div className="relative z-10 flex h-72 items-end gap-3 rounded-[1.5rem] bg-black/10 p-5">
+              <div className="relative z-10 flex h-72 items-end gap-3 rounded-3xl bg-black/10 p-5">
                 {bars.map((height, index) => (
                   <motion.div
-                    key={height + index}
+                    key={`insight-bar-${index}-${height}`}
                     animate={{
                       height: [
                         `${height}%`,

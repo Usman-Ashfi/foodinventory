@@ -60,7 +60,7 @@ function ProductChip({ item, index }) {
 export default function ProductScanner() {
   return (
     <section id="scanner" className="w-full overflow-hidden bg-white">
-      <div className="grid min-h-[680px] lg:grid-cols-[1.06fr_0.94fr]">
+      <div className="grid min-h-170 lg:grid-cols-[1.06fr_0.94fr]">
         <Reveal className="flex flex-col justify-center px-7 py-16 sm:px-12 lg:px-16">
           <motion.div
             variants={fade}
@@ -88,7 +88,10 @@ export default function ProductScanner() {
             variants={fade}
             className="mt-8 flex flex-col gap-4 sm:flex-row"
           >
-            <button className="inline-flex items-center justify-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20"
+            >
               Run scanner <ArrowRight className="size-4" />
             </button>
             <div className="rounded-full bg-[#d9ffb9] px-6 py-4 text-center shadow-xl shadow-black/5">
@@ -102,7 +105,7 @@ export default function ProductScanner() {
           <div className="absolute left-0 top-0 hidden h-full w-[44%] bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,.16),transparent_34%),linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-size-[auto,34px_34px,34px_34px] lg:block" />
           <motion.div
             variants={fade}
-            className="relative z-10 w-full max-w-3xl rounded-4xl bg-[#232832] p-5 shadow-2xl shadow-black/20 lg:ml-10"
+            className="relative z-10 w-full max-w-3xl rounded-4xl bg-[#153a20] p-5 shadow-2xl shadow-black/20 lg:ml-10"
           >
             <div className="mb-5 flex items-center justify-between text-white">
               <div>

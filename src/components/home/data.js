@@ -20,12 +20,6 @@ export const steps = [
   ["Dispatch orders", "Move packed orders into delivery with reliable status updates.", Truck],
 ];
 
-export const metrics = [
-  ["1,284", "items tracked"],
-  ["97%", "order accuracy"],
-  ["42", "deliveries today"],
-];
-
 export const insights = [
   ["Waste risk", "Low", "bg-[#e0f4c6]"],
   ["Revenue", "$18.4k", "bg-white"],
@@ -40,23 +34,11 @@ export const roles = [
   ["Cashier", "Orders and customer lookup"],
 ];
 
-export const proof = [
-  ["34%", "less spoilage"],
-  ["2.1x", "faster reporting"],
-  ["18 min", "daily admin saved"],
-];
-
 export const products = [
   ["Avocado", "Batch A-18", "Fresh"],
   ["Broccoli", "Exp 3 days", "Watch"],
   ["Honey jar", "36 units", "Stable"],
   ["Tomatoes", "Restock soon", "Low"],
-];
-
-export const heroSignals = [
-  ["Inventory AI", "1,284"],
-  ["Orders live", "316"],
-  ["Delivery ETA", "18m"],
 ];
 
 export const reportItems = ["Fresh stock", "Customer orders", "Sales trends", "User roles"];

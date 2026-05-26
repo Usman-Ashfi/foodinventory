@@ -16,7 +16,7 @@ export default function Security() {
   return (
     <section
       id="security"
-      className="relative w-full overflow-hidden bg-[#232832]"
+      className="relative w-full overflow-hidden bg-[#153a20]"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(255,224,120,.2),transparent_28%),linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-size-[auto,36px_36px,36px_36px]" />
 
@@ -44,7 +44,10 @@ export default function Security() {
             and dispatchers get the exact food workflows they need.
           </motion.p>
           <motion.div variants={fade} className="mt-8 flex flex-wrap gap-4">
-            <button className="inline-flex items-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20">
+            <button
+              type="button"
+              className="inline-flex items-center gap-3 rounded-full bg-black px-7 py-4 font-bold text-white shadow-2xl shadow-black/20"
+            >
               Configure roles <ArrowRight className="size-4" />
             </button>
             <div className="rounded-full bg-[#ffe078] px-6 py-4 text-center shadow-xl shadow-black/5">
@@ -74,7 +77,7 @@ export default function Security() {
             </div>
 
             <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
-              <div className="relative min-h-72 rounded-[2rem] bg-white/10 p-6 backdrop-blur-md">
+              <div className="relative min-h-72 rounded-4xl bg-white/10 p-6 backdrop-blur-md">
                 <motion.div
                   animate={{ scale: [1, 1.08, 1] }}
                   transition={{

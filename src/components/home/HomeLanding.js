@@ -7,7 +7,6 @@ import Insights from "./Insights";
 import Modules from "./Modules";
 import Nav from "./Nav";
 import ProductScanner from "./ProductScanner";
-import Proof from "./Proof";
 import Reports from "./Reports";
 import Security from "./Security";
 import Workflow from "./Workflow";
@@ -17,12 +16,12 @@ export default function HomeLanding() {
     <main className="min-h-screen text-[#153a20]">
       <Nav />
       <Hero />
-      <ProductScanner />
-      <Modules />
-      <Workflow />
       <Security />
-      <Insights />
+      <ProductScanner />
+      <Workflow />
+      <Modules />
       <Reports />
+      <Insights />
       <CTA />
       <Footer />
     </main>
