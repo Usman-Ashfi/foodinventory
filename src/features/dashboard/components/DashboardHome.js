@@ -3,49 +3,226 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import EmptyState from '@shared/components/ui/EmptyState'
 import Icon from '@shared/components/ui/Icon'
 import LoadingState from '@shared/components/ui/LoadingState'
-import MetricCard from '@shared/components/ui/MetricCard'
-import SectionCard from '@shared/components/ui/SectionCard'
 import StatusBadge from '@shared/components/ui/StatusBadge'
 import { buildDashboardStats, buildInventoryHealth, quickActions } from '@features/dashboard/utility/dashboardUtils'
 
-function WorkspaceHeader({ user, health }) {
+const emptyData = { inventory: [], customers: [], orders: [], deliveries: [] }
+const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }
+const panel = 'rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-black/5'
+
+function money(value) {
+  return `$${Number(value || 0).toLocaleString()}`
+}
+
+function HeroPanel({ user, data, health }) {
+  const openOrders = data.orders.filter((item) => !['completed', 'canceled'].includes(item.orderStatus)).length
+  const activeDeliveries = data.deliveries.filter((item) => ['assigned', 'picked_up', 'out_for_delivery'].includes(item.status)).length
+
   return (
-    <section className="relative isolate overflow-hidden border-b border-emerald-100 bg-white">
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,#ffffff_0%,#f8fafc_60%,#ecfdf5_100%)]" />
-      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_340px] lg:px-8">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            Live workspace
-          </div>
-          <h1 className="mt-5 max-w-3xl text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Good to see you, {user?.fullName || user?.username || 'there'}.
-          </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-            Monitor stock, customers, orders, deliveries, and reports from one calm operations center.
-          </p>
+    <motion.section variants={fade} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className={`${panel} relative isolate min-h-80 overflow-hidden bg-[#153a20] p-6 text-white sm:p-8`}>
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,#153a20_0%,#1f6f49_54%,#f1950c_135%)]" />
+        <div className="absolute right-0 top-0 -z-10 h-full w-1/2 rounded-bl-[7rem] bg-black/20" />
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-[#ffe078] px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-[#153a20]">
+            Live kitchen ops
+          </span>
+          <span className="rounded-full border border-white/20 px-4 py-2 text-xs font-bold text-white/75">
+            {data.inventory.length} tracked items
+          </span>
         </div>
-        <div className="border-emerald-100 lg:border-l lg:pl-8">
-          <div className="flex items-start justify-between">
-            <div><p className="text-sm font-semibold text-slate-900">Inventory health</p><p className="mt-1 text-xs text-slate-500">Current item status</p></div>
-            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">Live</span>
-          </div>
-          <div className="mt-5 space-y-4">{health.map((item) => <div key={item.label}><div className="mb-1.5 flex items-center justify-between text-xs"><span className="font-medium text-slate-600">{item.label}</span><span className="font-semibold text-slate-900">{item.value}</span></div><div className="h-2 overflow-hidden rounded-full bg-slate-100"><div className={`${item.color} h-full rounded-full`} style={{ width: `${item.percent}%` }} /></div></div>)}</div>
+        <h1 className="mt-8 max-w-2xl text-4xl font-black tracking-tight sm:text-5xl">
+          Good to see you, {user?.fullName || user?.username || 'there'}.
+        </h1>
+        <p className="mt-4 max-w-xl text-base font-medium leading-7 text-white/70">
+          A fast, animated command center for stock freshness, order flow, customers, delivery movement, and reports.
+        </p>
+        <div className="mt-8 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-3">
+          {[
+            ['Open orders', openOrders, 'receipt'],
+            ['Active runs', activeDeliveries, 'delivery'],
+            ['Customers', data.customers.length, 'users'],
+          ].map(([label, value, icon]) => (
+            <div key={label} className="rounded-3xl bg-white/10 p-4 ring-1 ring-white/10 backdrop-blur">
+              <Icon name={icon} className="size-5 text-[#ffe078]" />
+              <p className="mt-4 text-3xl font-black">{value}</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-white/55">{label}</p>
+            </div>
+          ))}
         </div>
       </div>
-    </section>
+
+      <div className={`${panel} overflow-hidden p-5 sm:p-6`}>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#f1950c]">Freshness radar</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-black">Inventory health</h2>
+          </div>
+          <span className="rounded-full bg-[#d9ffb9] px-3 py-1 text-xs font-black text-[#153a20]">Live</span>
+        </div>
+        <div className="relative mt-7 h-52 overflow-hidden rounded-[1.75rem] bg-[#f8faf7] p-5">
+          <div className="absolute inset-x-6 top-1/2 h-px bg-black/10" />
+          <div className="absolute left-1/2 top-1/2 size-36 -translate-x-1/2 -translate-y-1/2">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+              className="size-full rounded-full border border-dashed border-[#153a20]/25"
+            />
+          </div>
+          <div className="relative grid h-full grid-cols-3 items-end gap-3">
+            {health.map((item, index) => (
+              <div key={item.label} className="text-center">
+                <motion.div
+                  animate={{ height: [`${Math.max(item.percent, 8)}%`, `${Math.min(item.percent + 18, 100)}%`, `${Math.max(item.percent, 8)}%`] }}
+                  transition={{ duration: 2.6 + index * 0.35, repeat: Infinity, ease: 'easeInOut' }}
+                  className={`mx-auto w-full max-w-16 rounded-t-full ${item.color}`}
+                />
+                <p className="mt-3 text-xl font-black text-black">{item.value}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-zinc-500">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
+function MetricGrid({ stats }) {
+  return (
+    <motion.section variants={fade} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {stats.map((stat, index) => (
+        <motion.div
+          key={stat.label}
+          whileHover={{ y: -5 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+          className={`${panel} relative overflow-hidden p-5`}
+        >
+          <motion.div
+            className="absolute inset-x-0 top-0 h-1 bg-[#ffe078]"
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ duration: 3 + index * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <div className="flex items-center justify-between gap-4">
+            <span className="grid size-12 place-items-center rounded-full bg-[#153a20] text-[#ffe078]">
+              <Icon name={stat.icon} />
+            </span>
+            <span className="rounded-full bg-[#f8faf7] px-3 py-1 text-xs font-black uppercase text-zinc-500">{stat.detail}</span>
+          </div>
+          <p className="mt-6 text-4xl font-black tracking-tight text-black">{stat.value}</p>
+          <p className="mt-1 text-sm font-bold text-zinc-500">{stat.label}</p>
+        </motion.div>
+      ))}
+    </motion.section>
+  )
+}
+
+function ActionsAndFlow({ data }) {
+  const focus = [
+    ['Pending orders', data.orders.filter((item) => item.orderStatus === 'pending').length, 'pending'],
+    ['Out for delivery', data.deliveries.filter((item) => item.status === 'out_for_delivery').length, 'out_for_delivery'],
+    ['Low stock', data.inventory.filter((item) => Number(item.quantity) <= Number(item.minQuantity || 0)).length, 'low'],
+  ]
+
+  return (
+    <motion.section variants={fade} className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+      <div className={`${panel} p-5 sm:p-6`}>
+        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#f1950c]">Launch pad</p>
+        <h2 className="mt-2 text-2xl font-black tracking-tight text-black">Quick actions</h2>
+        <div className="mt-5 grid gap-3">
+          {quickActions.map((action) => (
+            <Link key={action.title} href={action.href} className="group flex items-center gap-4 rounded-[1.4rem] bg-[#f8faf7] p-4 transition hover:bg-[#d9ffb9]">
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white text-[#153a20] shadow-lg shadow-black/5">
+                <Icon name={action.icon} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-black text-black">{action.title}</span>
+                <span className="mt-1 block truncate text-xs font-bold text-zinc-500">{action.description}</span>
+              </span>
+              <Icon name="arrowRight" className="size-4 transition group-hover:translate-x-1" />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className={`${panel} overflow-hidden p-5 sm:p-6`}>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#f1950c]">Focus lane</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-black">Today in motion</h2>
+          </div>
+          <span className="rounded-full bg-black px-4 py-2 text-xs font-black text-white">Auto sync</span>
+        </div>
+        <div className="mt-6 grid gap-4">
+          {focus.map(([label, value, status], index) => (
+            <div key={label} className="relative overflow-hidden rounded-[1.5rem] bg-[#f8faf7] p-4">
+              <motion.span
+                className="absolute inset-y-0 left-0 bg-[#ffe078]/60"
+                animate={{ width: ['12%', `${Math.min(22 + value * 12, 86)}%`, '12%'] }}
+                transition={{ duration: 3 + index * 0.3, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <div className="relative flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-black text-black">{label}</p>
+                  <p className="mt-1 text-xs font-bold text-zinc-500">{value} records need attention</p>
+                </div>
+                <StatusBadge status={status} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
+function RecentOrders({ orders }) {
+  return (
+    <motion.section variants={fade} className={`${panel} p-5 sm:p-6`}>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#f1950c]">Order stream</p>
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-black">Recent orders</h2>
+        </div>
+        <Link href="/dashboard/orders" className="inline-flex items-center gap-2 rounded-full bg-[#153a20] px-5 py-3 text-sm font-black text-white">
+          View orders <Icon name="arrowRight" className="size-4" />
+        </Link>
+      </div>
+      {orders.length === 0 ? (
+        <EmptyState icon="receipt" title="No recent orders yet" description="Orders will appear here once the workflow starts moving." />
+      ) : (
+        <div className="mt-6 grid gap-3">
+          {orders.slice(0, 5).map((order, index) => (
+            <motion.div
+              key={order.id}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="grid gap-3 rounded-[1.35rem] bg-[#f8faf7] p-4 sm:grid-cols-[1fr_auto_auto] sm:items-center"
+            >
+              <div>
+                <p className="text-sm font-black text-black">{order.orderNumber}</p>
+                <p className="mt-1 text-xs font-bold text-zinc-500">{order.customerName}</p>
+              </div>
+              <p className="text-sm font-black text-[#153a20]">{money(order.total)}</p>
+              <StatusBadge status={order.orderStatus} />
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </motion.section>
   )
 }
 
 export default function DashboardHome() {
   const router = useRouter()
   const [user, setUser] = useState(null)
-  const [data, setData] = useState({ inventory: [], customers: [], orders: [], deliveries: [] })
+  const [data, setData] = useState(emptyData)
   const [loading, setLoading] = useState(true)
-
   const stats = useMemo(() => buildDashboardStats(data), [data])
   const health = useMemo(() => buildInventoryHealth(data.inventory), [data.inventory])
 
@@ -57,7 +234,7 @@ export default function DashboardHome() {
       if (!active) return
       if (!summary.user) return router.push('/login')
       setUser(summary.user)
-      setData(summary.data || { inventory: [], customers: [], orders: [], deliveries: [] })
+      setData(summary.data || emptyData)
       setLoading(false)
     }
     load().catch(() => active && setLoading(false))
@@ -67,16 +244,16 @@ export default function DashboardHome() {
   if (loading) return <LoadingState label="Loading dashboard..." contained />
 
   return (
-    <>
-      <WorkspaceHeader user={user} health={health} />
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 pb-28 pt-8 sm:px-6 lg:px-8">
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map((stat) => <MetricCard key={stat.label} {...stat} />)}</section>
-        <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <SectionCard title="Quick actions" eyebrow="Operations"><div className="space-y-3">{quickActions.map((action) => <Link key={action.title} href={action.href} className="group flex w-full items-start gap-4 rounded-xl border border-slate-200 bg-slate-50/70 p-4 transition-colors hover:border-emerald-200 hover:bg-emerald-50/70"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-emerald-600 ring-1 ring-slate-200"><Icon name={action.icon} /></span><span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-3"><span className="text-sm font-semibold text-slate-900">{action.title}</span><Icon name="arrowRight" className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" /></span><span className="mt-1 block text-sm leading-6 text-slate-500">{action.description}</span></span></Link>)}</div></SectionCard>
-          <SectionCard title="Operational focus" eyebrow="Today"><div className="grid gap-3">{[['Orders', data.orders.filter((item) => item.orderStatus === 'pending').length, 'pending'], ['Deliveries', data.deliveries.filter((item) => item.status === 'out_for_delivery').length, 'out_for_delivery'], ['Low stock', data.inventory.filter((item) => Number(item.quantity) <= Number(item.minQuantity || 0)).length, 'low']].map(([label, value, status]) => <div key={label} className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3"><span className="text-sm font-semibold text-slate-700">{label}</span><div className="flex items-center gap-2"><StatusBadge status={status} /><span className="text-sm font-bold text-slate-950">{value}</span></div></div>)}</div></SectionCard>
-        </section>
-        <SectionCard title="Recent orders" eyebrow="Activity">{data.orders.length === 0 ? <EmptyState icon="receipt" title="No recent orders yet" description="Orders will appear here once the workflow starts moving." /> : <div className="divide-y divide-slate-100">{data.orders.slice(0, 5).map((order) => <div key={order.id} className="flex items-center justify-between gap-4 py-3"><div><p className="text-sm font-semibold text-slate-950">{order.orderNumber}</p><p className="text-xs text-slate-500">{order.customerName}</p></div><StatusBadge status={order.orderStatus} /></div>)}</div>}</SectionCard>
-      </main>
-    </>
+    <motion.main
+      variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+      initial="hidden"
+      animate="show"
+      className="space-y-6 px-4 pb-28 pt-5 sm:px-6 lg:px-8"
+    >
+      <HeroPanel user={user} data={data} health={health} />
+      <MetricGrid stats={stats} />
+      <ActionsAndFlow data={data} />
+      <RecentOrders orders={data.orders} />
+    </motion.main>
   )
 }
