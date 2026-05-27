@@ -90,11 +90,11 @@ export default function ReportModule() {
     ]
   }, [summary])
 
-  async function loadReports() {
+  async function loadReports(nextStart = startDate, nextEnd = endDate) {
     setLoading(true)
     const query = new URLSearchParams()
-    if (startDate) query.set('startDate', startDate)
-    if (endDate) query.set('endDate', endDate)
+    if (nextStart) query.set('startDate', nextStart)
+    if (nextEnd) query.set('endDate', nextEnd)
     const [meData, reportData] = await Promise.all([fetch('/api/me').then((res) => res.json()), fetch(`/api/reports/summary?${query}`).then((res) => res.json())])
     if (!meData.user) return router.push('/login')
     setSummary(reportData.summary)
@@ -102,8 +102,18 @@ export default function ReportModule() {
   }
 
   useEffect(() => {
-    loadReports().catch(() => setLoading(false))
-  }, [])
+    let active = true
+    async function loadInitialReports() {
+      setLoading(true)
+      const [meData, reportData] = await Promise.all([fetch('/api/me').then((res) => res.json()), fetch('/api/reports/summary').then((res) => res.json())])
+      if (!active) return
+      if (!meData.user) return router.push('/login')
+      setSummary(reportData.summary)
+      setLoading(false)
+    }
+    loadInitialReports().catch(() => active && setLoading(false))
+    return () => { active = false }
+  }, [router])
 
   if (loading && !summary) return <LoadingState label="Loading reports..." contained />
 
@@ -114,7 +124,7 @@ export default function ReportModule() {
         <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
           <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className={inputClass} />
           <input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className={inputClass} />
-          <button onClick={loadReports} className="rounded-full bg-[#153a20] px-5 py-3 text-sm font-black text-white">Apply filters</button>
+          <button onClick={() => loadReports().catch(() => setLoading(false))} className="rounded-full bg-[#153a20] px-5 py-3 text-sm font-black text-white">Apply filters</button>
         </div>
       </motion.section>
       <section className="grid gap-6 lg:grid-cols-2">

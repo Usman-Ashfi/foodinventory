@@ -186,9 +186,10 @@ export default function DeliveryModule() {
 
   async function removeDelivery(delivery) {
     setDeletingId(delivery.id)
-    const data = await (await fetch(`/api/deliveries/${delivery.id}`, { method: 'DELETE' })).json()
+    const res = await fetch(`/api/deliveries/${delivery.id}`, { method: 'DELETE' })
+    const data = await res.json()
     setDeletingId(null)
-    if (data.error) return setError(data.error || 'Failed to delete delivery')
+    if (!res.ok) return setError(data.error || 'Failed to delete delivery')
     setDeliveries((prev) => prev.filter((item) => item.id !== delivery.id))
     setMessage('Delivery deleted')
   }

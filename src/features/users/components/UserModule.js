@@ -8,8 +8,8 @@ import EmptyState from '@shared/components/ui/EmptyState'
 import Icon from '@shared/components/ui/Icon'
 import LoadingState from '@shared/components/ui/LoadingState'
 import StatusBadge from '@shared/components/ui/StatusBadge'
+import { userInitialForm, userRoles } from '@features/users/schema/userConfig'
 
-const initialForm = { username: '', fullName: '', password: '', role: 'user' }
 const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }
 const panel = 'rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-black/5'
 const inputClass = 'w-full rounded-[1.15rem] border border-black/5 bg-[#f8faf7] px-4 py-3 text-sm font-bold text-black outline-none focus:ring-2 focus:ring-[#ffe078]'
@@ -60,7 +60,7 @@ function RolePicker({ value, onChange }) {
     <div>
       <span className="mb-2 block text-xs font-black uppercase tracking-[0.14em] text-zinc-500">Role</span>
       <div className="grid grid-cols-2 gap-2 rounded-[1.25rem] bg-[#f8faf7] p-1">
-        {['user', 'admin'].map((role) => <button key={role} type="button" onClick={() => onChange('role', role)} className={`rounded-full px-4 py-3 text-sm font-black capitalize transition ${value === role ? 'bg-[#153a20] text-white' : 'text-zinc-500 hover:bg-white'}`}>{role}</button>)}
+        {userRoles.map((role) => <button key={role.value} type="button" onClick={() => onChange('role', role.value)} className={`rounded-full px-4 py-3 text-sm font-black transition ${value === role.value ? 'bg-[#153a20] text-white' : 'text-zinc-500 hover:bg-white'}`}>{role.label}</button>)}
       </div>
     </div>
   )
@@ -109,7 +109,7 @@ export default function UserModule() {
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState(null)
   const [users, setUsers] = useState([])
-  const [form, setForm] = useState(initialForm)
+  const [form, setForm] = useState(userInitialForm)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [deletingId, setDeletingId] = useState(null)
@@ -155,8 +155,8 @@ export default function UserModule() {
     const data = await res.json()
     setSaving(false)
     if (!res.ok) return setError(data.error || 'Failed to create user')
-    setUsers((prev) => [{ ...data.user, full_name: data.user.fullName, created_at: data.user.createdAt }, ...prev])
-    setForm(initialForm)
+    setUsers((prev) => [data.user, ...prev])
+    setForm(userInitialForm)
     setMessage('User created successfully')
   }
 
