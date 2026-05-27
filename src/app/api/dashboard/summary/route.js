@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getDashboardSummary } from '@/features/dashboard/dashboardService'
+import { getDashboardSummary } from '@features/dashboard/services/dashboardService'
 import { requireSession } from '@/lib/session'
 
 export async function GET() {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { updateOrderStatus } from '@/features/orders/orderService'
+import { updateOrderStatus } from '@features/orders/services/orderService'
 
 export async function PATCH(request, { params }) {
   const { error } = await requireSession()

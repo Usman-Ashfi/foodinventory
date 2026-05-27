@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { getReportSummary } from '@/features/reports/reportService'
+import { getReportSummary } from '@features/reports/services/reportService'
 
 export async function GET(request) {
   const { error } = await requireSession()

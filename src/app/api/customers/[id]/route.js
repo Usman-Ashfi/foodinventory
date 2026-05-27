@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { deleteCustomer, updateCustomer } from '@/features/customers/customerService'
+import { deleteCustomer, updateCustomer } from '@features/customers/services/customerService'
 
 export async function PATCH(request, { params }) {
   const { error } = await requireSession()

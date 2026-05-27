@@ -1,4 +1,4 @@
-import CustomerModule from '@/features/customers/CustomerModule'
+import CustomerModule from '@features/customers/components/CustomerModule'
 
 export default function CustomersPage() {
   return <CustomerModule />

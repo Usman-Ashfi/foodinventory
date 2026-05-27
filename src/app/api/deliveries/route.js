@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { createDelivery, listDeliveries } from '@/features/deliveries/deliveryService'
+import { createDelivery, listDeliveries } from '@features/deliveries/services/deliveryService'
 
 export async function GET() {
   const { error } = await requireSession()

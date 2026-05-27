@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getDeliveriesBootstrap } from '@/features/deliveries/deliveryBootstrapService'
+import { getDeliveriesBootstrap } from '@features/deliveries/services/deliveryBootstrapService'
 import { requireSession } from '@/lib/session'
 
 export async function GET() {

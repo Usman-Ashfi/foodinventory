@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { createCustomer, listCustomers } from '@/features/customers/customerService'
+import { createCustomer, listCustomers } from '@features/customers/services/customerService'
 
 export async function GET() {
   const { error } = await requireSession()

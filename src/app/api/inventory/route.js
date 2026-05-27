@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import pool from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
 import { ensureInventoryTable } from '@/lib/schema'
-import { serializeInventoryItem } from '@/features/inventory/inventoryService'
+import { serializeInventoryItem } from '@features/inventory/services/inventoryService'
 
 async function getSession() {
   const cookieStore = await cookies()

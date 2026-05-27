@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireSession } from '@/lib/session'
-import { createOrder, listOrders } from '@/features/orders/orderService'
+import { createOrder, listOrders } from '@features/orders/services/orderService'
 
 export async function GET() {
   const { error } = await requireSession()
