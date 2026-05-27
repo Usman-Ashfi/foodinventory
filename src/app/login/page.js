@@ -1,8 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BarChart3,
+  LockKeyhole,
+  PackageCheck,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  User,
+} from "lucide-react";
+
+const fade = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const signals = [
+  ["Inventory sync", "1,284 items", PackageCheck, "bg-[#d9ffb9]"],
+  ["Sales closed", "$18.4k", BarChart3, "bg-[#ffd7ec]"],
+  ["Routes live", "42 stops", Truck, "bg-[#ffe5bd]"],
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,21 +34,20 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = await fetch("/api/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+      const data = await response.json();
 
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (!response.ok) {
         setError(data.error || "Login failed");
         return;
       }
@@ -40,119 +62,191 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-1 items-center justify-center bg-slate-50 px-4 py-12">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="mb-8 flex items-center justify-center gap-2">
-          <svg
-            className="h-8 w-8 text-emerald-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+    <main className="min-h-screen overflow-hidden bg-[#f6f3ed] text-black">
+      <div className="grid min-h-screen lg:grid-cols-[0.94fr_1.06fr]">
+        <section className="relative flex flex-col justify-between overflow-hidden bg-[#153a20] px-7 py-8 text-white sm:px-12 lg:px-16">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(255,224,120,.24),transparent_28%),linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-size-[auto,36px_36px,36px_36px]" />
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fade}
+            className="relative z-10 flex items-center justify-between"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-          <span className="text-xl font-bold tracking-tight text-emerald-950">
-            PantryPro
-          </span>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-              Welcome back
-            </h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Sign in to your PantryPro account
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-            {error && (
-              <div className="rounded-lg bg-red-50 px-3 py-2.5 text-sm text-red-600">
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-slate-700"
-              >
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                autoComplete="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
-                placeholder="Enter your username"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex w-full justify-center rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            <Link href="/home" className="font-black tracking-tight text-3xl">
+              fre<span className="text-[#e9291d]">s</span>h
+              <span className="text-[#ffb300]">o</span>
+            </Link>
+            <Link
+              href="/home"
+              className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white"
             >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-4 border-gray-300 border-t-emerald-500"></div>
-                  <span>Signing in...</span>
-                </div>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </form>
+              <ArrowLeft className="size-4" />
+              Home
+            </Link>
+          </motion.div>
 
-          <div className="mt-6 rounded-lg bg-slate-50 px-3 py-2.5 text-center">
-            <p className="text-xs text-slate-500">
-              Default login:{" "}
-              <span className="font-medium text-slate-700">admin</span> /{" "}
-              <span className="font-medium text-slate-700">admin123</span>
-            </p>
-          </div>
-        </div>
-
-        <p className="mt-6 text-center text-sm text-slate-500">
-          <Link
-            href="/home"
-            className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            transition={{ staggerChildren: 0.1 }}
+            className="relative z-10 my-16 max-w-xl"
           >
-            &larr; Back to home
-          </Link>
-        </p>
+            <motion.div
+              variants={fade}
+              className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-[#886511]"
+            >
+              <Sparkles className="size-4" />
+              Smart food workspace
+            </motion.div>
+            <motion.h1
+              variants={fade}
+              className="text-5xl font-black leading-[1.02] tracking-tight sm:text-6xl"
+            >
+              Sign in to run
+              <span className="block font-light">the food flow</span>
+            </motion.h1>
+            <motion.p
+              variants={fade}
+              className="mt-6 max-w-md text-base font-medium leading-7 text-white/60"
+            >
+              Jump back into inventory, sales reports, customers, users, and
+              delivery operations from one live control center.
+            </motion.p>
+          </motion.div>
+
+          <div className="relative z-10 grid gap-4">
+            {signals.map(([label, value, Icon, bg], index) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0, y: [0, index % 2 ? 8 : -8, 0] }}
+                transition={{
+                  opacity: { delay: 0.28 + index * 0.1, duration: 0.55 },
+                  x: { delay: 0.28 + index * 0.1, duration: 0.55 },
+                  y: {
+                    delay: index * 0.2,
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                }}
+                className={`${bg} flex items-center justify-between rounded-full px-5 py-4 text-black shadow-2xl shadow-black/20`}
+              >
+                <span className="flex items-center gap-3 font-black">
+                  <span className="grid size-12 place-items-center rounded-full bg-white">
+                    <Icon className="size-6" />
+                  </span>
+                  {label}
+                </span>
+                <span className="text-sm font-black">{value}</span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <section className="relative flex items-center justify-center px-7 py-12 sm:px-12 lg:px-16">
+          <motion.div
+            animate={{ y: [0, -18, 0], rotate: [0, 1.5, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute right-10 top-10 hidden rounded-4xl bg-[#ffe078] p-5 shadow-2xl shadow-black/10 lg:block"
+          >
+            <p className="text-sm font-bold text-black/55">Protected</p>
+            <p className="mt-1 text-3xl font-black">24/7</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="w-full max-w-md rounded-4xl bg-white p-5 shadow-2xl shadow-black/10"
+          >
+            <div className="rounded-3xl bg-[#f6f3ed] p-6">
+              <div className="mb-7 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.24em] text-[#f1950c]">
+                    Welcome back
+                  </p>
+                  <h2 className="mt-2 text-4xl font-black tracking-tight">
+                    Login
+                  </h2>
+                </div>
+                <span className="grid size-14 place-items-center rounded-full bg-[#153a20] text-white">
+                  <ShieldCheck className="size-7" />
+                </span>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <div className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
+                    {error}
+                  </div>
+                )}
+
+                <label className="block">
+                  <span className="text-sm font-black text-zinc-600">
+                    Username
+                  </span>
+                  <span className="mt-2 flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-xl shadow-black/5">
+                    <User className="size-5 text-[#f1950c]" />
+                    <input
+                      id="username"
+                      name="username"
+                      type="text"
+                      required
+                      autoComplete="username"
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      placeholder="admin"
+                      className="w-full bg-transparent text-sm font-bold outline-none placeholder:text-zinc-400"
+                    />
+                  </span>
+                </label>
+
+                <label className="block">
+                  <span className="text-sm font-black text-zinc-600">
+                    Password
+                  </span>
+                  <span className="mt-2 flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-xl shadow-black/5">
+                    <LockKeyhole className="size-5 text-[#f1950c]" />
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      required
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="admin123"
+                      className="w-full bg-transparent text-sm font-bold outline-none placeholder:text-zinc-400"
+                    />
+                  </span>
+                </label>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group mt-2 inline-flex w-full items-center justify-center gap-4 rounded-full bg-black py-3 pl-3 pr-6 font-bold text-white shadow-2xl shadow-black/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-55"
+                >
+                  <span className="grid size-12 place-items-center rounded-full bg-[#ffe078] text-black">
+                    {loading ? (
+                      <span className="size-5 animate-spin rounded-full border-4 border-black/20 border-t-black" />
+                    ) : (
+                      <LockKeyhole className="size-5" />
+                    )}
+                  </span>
+                  {loading ? "Signing in..." : "Open dashboard"}
+                  <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+                </button>
+              </form>
+
+              <div className="mt-5 rounded-2xl bg-white px-4 py-3 text-center text-xs font-bold text-zinc-500">
+                Default login: <span className="text-black">admin</span> /{" "}
+                <span className="text-black">admin123</span>
+              </div>
+            </div>
+          </motion.div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

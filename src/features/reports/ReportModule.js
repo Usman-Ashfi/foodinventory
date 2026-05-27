@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import PageHero from '@/components/dashboard/PageHero'
 import EmptyState from '@/components/ui/EmptyState'
 import LoadingState from '@/components/ui/LoadingState'
@@ -66,11 +65,10 @@ export default function ReportModule() {
     loadReports().catch(() => setLoading(false))
   }, [])
 
-  if (loading && !summary) return <LoadingState label="Loading reports..." />
+  if (loading && !summary) return <LoadingState label="Loading reports..." contained />
 
   return (
-    <DashboardShell user={user} label="Reports">
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <PageHero eyebrow="Insights" title="Reports" description="Track sales, orders, inventory health, and delivery performance with lightweight operational reporting." icon="report" asideTitle="Live summaries" asideText="Date filters apply to order and sales metrics." />
         <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
@@ -92,7 +90,6 @@ export default function ReportModule() {
             </div>
           </SectionCard>
         </section>
-      </main>
-    </DashboardShell>
+    </main>
   )
 }

@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import PageHero from '@/components/dashboard/PageHero'
 import DataToolbar from '@/components/ui/DataToolbar'
 import EmptyState from '@/components/ui/EmptyState'
@@ -116,11 +115,10 @@ export default function OrderModule() {
     setMessage('Order deleted')
   }
 
-  if (loading) return <LoadingState label="Loading orders..." />
+  if (loading) return <LoadingState label="Loading orders..." contained />
 
   return (
-    <DashboardShell user={user} label="Order management">
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <PageHero eyebrow="Sales workflow" title="Order management" description="Build inventory-linked orders, confirm stock usage, and move kitchen work from pending to completed." icon="receipt" asideTitle="Inventory linked" asideText="Stock is reduced when orders are confirmed." />
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{metrics.map((metric) => <MetricCard key={metric.label} {...metric} />)}</section>
         <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -135,7 +133,6 @@ export default function OrderModule() {
             </div>
           </SectionCard>
         </section>
-      </main>
-    </DashboardShell>
+    </main>
   )
 }

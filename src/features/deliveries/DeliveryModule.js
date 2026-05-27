@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import PageHero from '@/components/dashboard/PageHero'
 import ConfirmAction from '@/components/ui/ConfirmAction'
 import DataToolbar from '@/components/ui/DataToolbar'
@@ -107,11 +106,10 @@ export default function DeliveryModule() {
     setMessage('Delivery deleted')
   }
 
-  if (loading) return <LoadingState label="Loading deliveries..." />
+  if (loading) return <LoadingState label="Loading deliveries..." contained />
 
   return (
-    <DashboardShell user={user} label="Delivery tracking">
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <PageHero eyebrow="Dispatch" title="Delivery tracking" description="Assign orders, monitor delivery progress, and keep every handoff visible from one board." icon="delivery" asideTitle="Standard flow" asideText="Pending to delivered, with failed and canceled paths." />
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{metrics.map((metric) => <MetricCard key={metric.label} {...metric} />)}</section>
         <section className="grid gap-6 xl:grid-cols-[0.82fr_1.18fr]">
@@ -141,7 +139,6 @@ export default function DeliveryModule() {
             </div>
           </SectionCard>
         </section>
-      </main>
-    </DashboardShell>
+    </main>
   )
 }

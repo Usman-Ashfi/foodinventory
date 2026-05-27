@@ -1,5 +1,5 @@
 import LoadingState from '@/components/ui/LoadingState'
 
 export default function DashboardLoading() {
-  return <LoadingState label="Opening workspace..." />
+  return <LoadingState label="Opening workspace..." contained />
 }

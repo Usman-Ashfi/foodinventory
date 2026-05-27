@@ -1,9 +1,9 @@
-export default function LoadingState({ label = 'Loading...' }) {
+export default function LoadingState({ label = 'Loading...', contained = false }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="rounded-2xl border border-slate-200 bg-white px-6 py-5 text-center shadow-sm">
-        <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600" />
-        <p className="mt-4 text-sm font-medium text-slate-500">{label}</p>
+    <div className={`flex items-center justify-center px-4 ${contained ? 'min-h-[calc(100vh-5rem)] bg-[#f8faf7]' : 'min-h-screen bg-slate-50'}`}>
+      <div className="rounded-4xl bg-white px-7 py-6 text-center shadow-2xl shadow-black/10">
+        <div className="mx-auto size-10 animate-spin rounded-full border-4 border-[#d9ffb9] border-t-[#153a20]" />
+        <p className="mt-4 text-sm font-black text-zinc-500">{label}</p>
       </div>
     </div>
   )

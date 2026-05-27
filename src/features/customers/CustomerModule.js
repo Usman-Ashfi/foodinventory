@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import PageHero from '@/components/dashboard/PageHero'
 import ConfirmAction from '@/components/ui/ConfirmAction'
 import DataToolbar from '@/components/ui/DataToolbar'
@@ -105,11 +104,10 @@ export default function CustomerModule() {
     setMessage('Customer deleted')
   }
 
-  if (loading) return <LoadingState label="Loading customers..." />
+  if (loading) return <LoadingState label="Loading customers..." contained />
 
   return (
-    <DashboardShell user={user} label="Customer management">
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <PageHero eyebrow="Relationships" title="Customer management" description="Create customer profiles, keep contact details close, and connect every order to the right person." icon="users" asideTitle="Customer records" asideText="Ready for orders, reports, and delivery tracking." />
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{metrics.map((metric) => <MetricCard key={metric.label} {...metric} />)}</section>
         <section className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
@@ -147,7 +145,6 @@ export default function CustomerModule() {
             </div>
           </SectionCard>
         </section>
-      </main>
-    </DashboardShell>
+    </main>
   )
 }

@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import EmptyState from '@/components/ui/EmptyState'
 import Icon from '@/components/ui/Icon'
 import LoadingState from '@/components/ui/LoadingState'
@@ -65,10 +64,10 @@ export default function DashboardHome() {
     return () => { active = false }
   }, [router])
 
-  if (loading) return <LoadingState label="Loading dashboard..." />
+  if (loading) return <LoadingState label="Loading dashboard..." contained />
 
   return (
-    <DashboardShell user={user} label="Inventory command center" showLogout>
+    <>
       <WorkspaceHeader user={user} health={health} />
       <main className="mx-auto w-full max-w-7xl space-y-8 px-4 pb-28 pt-8 sm:px-6 lg:px-8">
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map((stat) => <MetricCard key={stat.label} {...stat} />)}</section>
@@ -78,6 +77,6 @@ export default function DashboardHome() {
         </section>
         <SectionCard title="Recent orders" eyebrow="Activity">{data.orders.length === 0 ? <EmptyState icon="receipt" title="No recent orders yet" description="Orders will appear here once the workflow starts moving." /> : <div className="divide-y divide-slate-100">{data.orders.slice(0, 5).map((order) => <div key={order.id} className="flex items-center justify-between gap-4 py-3"><div><p className="text-sm font-semibold text-slate-950">{order.orderNumber}</p><p className="text-xs text-slate-500">{order.customerName}</p></div><StatusBadge status={order.orderStatus} /></div>)}</div>}</SectionCard>
       </main>
-    </DashboardShell>
+    </>
   )
 }

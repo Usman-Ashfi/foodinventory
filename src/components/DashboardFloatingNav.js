@@ -18,13 +18,20 @@ export default function DashboardFloatingNav() {
   const pathname = usePathname()
 
   return (
-    <nav aria-label="Dashboard navigation" className="fixed inset-x-0 bottom-4 z-50 mx-auto flex w-[min(calc(100%-1rem),58rem)] items-center justify-start gap-1 overflow-x-auto rounded-full border border-emerald-100 bg-white/95 p-1.5 shadow-lg shadow-slate-900/10 backdrop-blur">
+    <nav
+      aria-label="Dashboard navigation"
+      className="fixed inset-x-3 bottom-4 z-50 flex items-center gap-1 overflow-x-auto rounded-full bg-[#153a20] p-2 shadow-2xl shadow-black/25 lg:hidden"
+    >
       {navItems.map((item) => {
         const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
 
         return (
-          <Link key={item.href} href={item.href} className={`flex shrink-0 items-center justify-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors ${isActive ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' : 'text-slate-600 hover:bg-emerald-50 hover:text-emerald-700'}`}>
-            <Icon name={item.icon} className="h-4 w-4" />
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`flex shrink-0 items-center justify-center gap-2 rounded-full px-3 py-2 text-sm font-black transition ${isActive ? 'bg-white text-[#153a20]' : 'text-white/70 hover:bg-white/10 hover:text-white'}`}
+          >
+            <Icon name={item.icon} className="size-4" />
             <span>{item.label}</span>
           </Link>
         )

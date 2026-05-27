@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardShell from '@/components/dashboard/DashboardShell'
 import PageHero from '@/components/dashboard/PageHero'
 import ConfirmAction from '@/components/ui/ConfirmAction'
 import EmptyState from '@/components/ui/EmptyState'
@@ -98,11 +97,10 @@ export default function UserModule() {
     setMessage('User deleted successfully')
   }
 
-  if (loading) return <LoadingState label="Loading users..." />
+  if (loading) return <LoadingState label="Loading users..." contained />
 
   return (
-    <DashboardShell user={currentUser} label="User management">
-      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <PageHero eyebrow="Access control" title="User management" description="Create team accounts, assign roles, and keep PantryPro access organized from one focused workspace." icon="key" asideTitle="Admin only" asideText="This area is protected by role checks." />
         <section className="grid gap-4 sm:grid-cols-3">{metrics.map((metric) => <MetricCard key={metric.label} {...metric} />)}</section>
         <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
@@ -124,7 +122,6 @@ export default function UserModule() {
             ))}</div>}
           </SectionCard>
         </section>
-      </main>
-    </DashboardShell>
+    </main>
   )
 }
