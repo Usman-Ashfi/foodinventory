@@ -9,10 +9,7 @@ import Icon from '@shared/components/ui/Icon'
 import LoadingState from '@shared/components/ui/LoadingState'
 import StatusBadge from '@shared/components/ui/StatusBadge'
 import { userInitialForm, userRoles } from '@features/users/schema/userConfig'
-
-const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }
-const panel = 'rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-black/5'
-const inputClass = 'w-full rounded-[1.15rem] border border-black/5 bg-[#f8faf7] px-4 py-3 text-sm font-bold text-black outline-none focus:ring-2 focus:ring-[#ffe078]'
+import { fade, panel, fieldInput as inputClass } from '@shared/theme'
 
 function displayName(user) {
   return user.full_name || user.fullName || user.username

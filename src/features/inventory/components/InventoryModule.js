@@ -10,6 +10,7 @@ import Icon from '@shared/components/ui/Icon'
 import LoadingState from '@shared/components/ui/LoadingState'
 import StatusBadge from '@shared/components/ui/StatusBadge'
 import { categories, formatDate, getDaysUntilExpiry, getItemStatus, inventoryFields, inventoryInitialForm } from '@features/inventory/schema/inventoryConfig'
+import { fade, panel, pillInput as selectClass } from '@shared/theme'
 
 const statusOptions = [
   { value: 'all', label: 'All status' },
@@ -18,8 +19,6 @@ const statusOptions = [
   { value: 'expiring', label: 'Expiring soon' },
   { value: 'expired', label: 'Expired' },
 ]
-const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }
-const panel = 'rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-black/5'
 
 function statusTone(status) {
   return {
@@ -104,8 +103,6 @@ function StockForm({ form, saving, error, message, onChange, onSubmit }) {
 }
 
 function FilterBar({ search, setSearch, category, setCategory, status, setStatus, shown }) {
-  const selectClass = 'rounded-full border border-black/5 bg-[#f8faf7] px-4 py-3 text-sm font-bold text-black outline-none transition focus:ring-2 focus:ring-[#ffe078]'
-
   return (
     <div className="grid gap-3 lg:grid-cols-[1fr_180px_180px_auto]">
       <label className="relative block">

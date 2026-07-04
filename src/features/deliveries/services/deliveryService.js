@@ -1,5 +1,6 @@
 import pool from '@/lib/db'
 import { ensureBusinessTables } from '@/lib/schema'
+import Queue from '@shared/dataStructures/Queue'
 
 const statuses = ['pending', 'assigned', 'picked_up', 'out_for_delivery', 'delivered', 'failed', 'canceled']
 
@@ -114,6 +115,31 @@ export async function updateDeliveryStatus(id, status) {
 
   if (!result.rows[0]) return { error: 'Delivery not found', status: 404 }
   return { delivery: serializeDelivery(result.rows[0]) }
+}
+
+// Dispatch the next pending delivery using a FIFO queue: load all pending jobs
+// in line order (earliest scheduled first, then oldest created), then serve the
+// one at the front by advancing it 'pending' -> 'assigned'.
+export async function dispatchNextDelivery() {
+  await ensureBusinessTables()
+
+  const result = await pool.query(
+    `SELECT * FROM food_deliveries WHERE status = 'pending'
+     ORDER BY scheduled_at ASC NULLS LAST, created_at ASC`
+  )
+
+  const queue = new Queue(result.rows.map(serializeDelivery))
+  if (queue.isEmpty()) return { error: 'No pending deliveries in the queue', status: 404 }
+
+  const next = queue.dequeue()               // front of the line
+  const upNext = queue.peek()                // who is served next time
+  const dispatched = await updateDeliveryStatus(next.id, 'assigned')
+
+  return {
+    delivery: dispatched.delivery,
+    remaining: queue.size,
+    upNext: upNext ? upNext.orderNumber : null,
+  }
 }
 
 export async function deleteDelivery(id) {

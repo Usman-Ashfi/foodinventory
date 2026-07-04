@@ -2,8 +2,7 @@
 
 import Icon from '@shared/components/ui/Icon'
 import { orderInitialForm, paymentStatuses } from '@features/orders/schema/orderConfig'
-
-const inputClass = 'w-full rounded-[1.15rem] border border-black/5 bg-[#f8faf7] px-4 py-3 text-sm font-bold text-black outline-none focus:ring-2 focus:ring-[#ffe078]'
+import { fieldInput as inputClass } from '@shared/theme'
 
 function Field({ label, children }) {
   return <label className="block"><span className="mb-2 block text-xs font-black uppercase tracking-[0.14em] text-zinc-500">{label}</span>{children}</label>

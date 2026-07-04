@@ -158,7 +158,7 @@ export default function Hero() {
                   unoptimized
                   priority={dishIndex === 0}
                   sizes="560px"
-                  className="scale-125 object-cover"
+                  className="scale-125 object-cover "
                 />
               </motion.div>
             </motion.div>

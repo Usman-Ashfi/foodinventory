@@ -9,10 +9,9 @@ import Icon from '@shared/components/ui/Icon'
 import LoadingState from '@shared/components/ui/LoadingState'
 import StatusBadge from '@shared/components/ui/StatusBadge'
 import { buildDashboardStats, buildInventoryHealth, quickActions } from '@features/dashboard/utility/dashboardUtils'
+import { fade, panel } from '@shared/theme'
 
 const emptyData = { inventory: [], customers: [], orders: [], deliveries: [] }
-const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }
-const panel = 'rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-black/5'
 
 function money(value) {
   return `$${Number(value || 0).toLocaleString()}`
